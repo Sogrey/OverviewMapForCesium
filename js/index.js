@@ -14,14 +14,32 @@ $(function () {
     });
 
     function initialGlobeView() {
-        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NjRjNGFjNy1jNDM3LTQzMTktODVlYS05YmFmOTAxYjk5MWUiLCJpZCI6Mzk5MSwic2NvcGVzIjpbImFzbCIsImFzciIsImFzdyIsImdjIl0sImlhdCI6MTUzOTU3OTE2NX0.-25udUzENRJ66mnICMK8Hfc6xgF_VP7P4sWkSHaUjOQ';
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NTE1MTRiMC1lM2JlLTRmYTUtOWQ1Mi1kZmNmYmU1ZTVlZmQiLCJpZCI6ODg1NCwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU1Mjk2MDIwMn0._hSyzYTsUH9whmQ3sPZDJl7LeREgbJ1ddv5XBTSouO8';
         var terrainProvider = Cesium.createWorldTerrain({
             requestWaterMask: true,
             requestVertexNormals: true
         });
-        var image_Source = new Cesium.UrlTemplateImageryProvider({
-            url: 'http://mt0.google.cn/vt/lyrs=t,r&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
-            credit: ''
+        var image_Source =
+        //  new Cesium.UrlTemplateImageryProvider({
+        //     url: 'http://mt0.google.cn/vt/lyrs=t,r&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}',
+        //     credit: ''
+        // });
+        // new Cesium.UrlTemplateImageryProvider({
+        //     url : 'https://programs.communications.gov.au/geoserver/ows?tiled=true&' +
+        //           'transparent=true&format=image%2Fpng&exceptions=application%2Fvnd.ogc.se_xml&' +
+        //           'styles=&service=WMS&version=1.1.1&request=GetMap&' +
+        //           'layers=public%3AMyBroadband_Availability&srs=EPSG%3A3857&' +
+        //           'bbox={westProjected}%2C{southProjected}%2C{eastProjected}%2C{northProjected}&' +
+        //           'width=256&height=256',
+        //     rectangle : Cesium.Rectangle.fromDegrees(96.799393, -43.598214999057824, 153.63925700000001, -9.2159219997013)
+        //  });
+         new Cesium.UrlTemplateImageryProvider({
+            url: 'https://t{s}.tianditu.gov.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=' + "6215132e0336a3db28ce73f8c9ff6db6",
+            //url: 'http://t{s}.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=6215132e0336a3db28ce73f8c9ff6db6',
+            subdomains: ["0", "1", "2", "3", "4", "5", "6"],
+            tilingScheme: new Cesium.WebMercatorTilingScheme(),
+            maximumLevel: 18,
+            gamma: 0.66
         });
         viewer = new Cesium.Viewer('cesiumContainer', {
             geocoder: false,
@@ -47,11 +65,16 @@ $(function () {
     }
 
     function initOverview() {
-        var url =
-            "http://mt0.google.cn/vt/lyrs=t,r&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}";
+
+        // var url = "http://mt0.google.cn/vt/lyrs=t,r&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}";
+        // var layer = new L.TileLayer(url, {
+        //     minZoom: 0,
+        //     maxZoom: 20
+        // });
+
+        var url = "http://webrd0{s}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8";
         var layer = new L.TileLayer(url, {
-            minZoom: 0,
-            maxZoom: 20
+            subdomains:"1234"
         });
         var container = document.getElementById("overview");
         var options = {
